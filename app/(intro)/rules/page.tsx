@@ -7,7 +7,7 @@ const page = () => {
           <p className="text-gray-100 mt-4 text-5xl">TIC-TAC-TOE</p>
     
           {/* Rules Section */}
-          <div className="mt-8 max-w-3xl p-6 bg-white text-gray-800 rounded-lg shadow-lg">
+          <div className="mt-8 max-w-3xl p-6 bg-purple-200 text-gray-800 rounded-lg shadow-lg">
             <h2 className="text-2xl font-bold mb-4">Tic Tac Toe Rules</h2>
             <ul className="list-inside list-disc space-y-2">
               <li><span className="font-semibold">Objective:</span> The goal is to be the first to get three of your marks (either X or O) in a row, column, or diagonal.</li>

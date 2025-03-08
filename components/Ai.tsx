@@ -21,29 +21,34 @@ export default function Ai() {
     };
 
     const handleBoxClick = (index: number) => {
-        if (boxes[index] !== "" || winner) return;
+        if (boxes[index] !== "" || winner || !turnO) return;  // Prevent clicking if AI's turn
+    
         const updatedBoxes = [...boxes];
         updatedBoxes[index] = "O";
         setBoxes(updatedBoxes);
-        setTurnO(false);  // Switch to AI's turn
-
-
+        setTurnO(false); // Switch to AI's turn
+    
         if (checkWinner(updatedBoxes)) return;
+    
+        // AI makes a move after 500ms
         setTimeout(() => makeComputerMove(updatedBoxes), 500);
     };
+    
+
 
     const makeComputerMove = (currentBoxes: string[]) => {
         const bestMove = minimax(currentBoxes, "X").index;
         if (bestMove === -1) return;
-
+    
         const updatedBoxes = [...currentBoxes];
         updatedBoxes[bestMove] = "X";
         setBoxes(updatedBoxes);
-        setTurnO(true); // Switch back to player's turn
-
-        checkWinner(updatedBoxes);
+        
+        if (!checkWinner(updatedBoxes)) {
+            setTurnO(true); // Switch back to player's turn after AI moves
+        }
     };
-
+    
 
     const checkWinner = (currentBoxes: string[]) => {
         for (const [a, b, c] of winPatterns) {
@@ -93,7 +98,7 @@ export default function Ai() {
         <>
             <Header />
             <main
-                className={`flex flex-col items-center justify-center min-h-screen bg-custom-blue z-20 ${winner === "O" ? "bg-green-500" : winner === "X" ? "bg-red-500" : ""} transition-colors duration-500 ease-in-out`}
+                className={`flex flex-col items-center justify-center min-h-screen bg-custom-blue z-20 ${winner === "O" ? "bg-green-500" : winner === "X" ? "bg-red-500" :  draw ? "bg-pink-500" : "bg-custom-blue"} `}
             >      {!winner && <div className={`flex flex-col md:flex-row items-center justify-between w-full max-w-4xl p-4 lg:bg-purple-950 shadow-lg rounded-lg z-10`}>
                 <div
                     className={`flex flex-col items-center justify-center w-24 h-18 md:w-1/4 md:h-auto p-4 m-2 rounded-md cursor-pointer ${turnO ? "bg-green-500" : "bg-white"
@@ -120,7 +125,7 @@ export default function Ai() {
             </div>}
                 {
                     winner && (
-                        <div className="mt-4 text-lg lg:text-[5rem]  font-bold text-black">Congratulation the winner is {winner}</div>
+                        <div className="mt-4 text-lg lg:text-[5rem]  font-bold text-black">{winner === "O" ? "🎉 Congratulations! You won!" : "😞 Sorry, you lost!"}{winner}</div>
                     )
                 }
                 {
